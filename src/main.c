@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "memory.h"
 #include "parser.h"
 
@@ -13,21 +12,17 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    const char *init_path = argv[1];
-    const char *va_path   = argv[2];
-    const char *out_path  = argv[3];
-
     Memory mem;
     mem_init(&mem);
 
     InitSpec init;
-    if (!parse_init_file(init_path, &init)) {
-        fprintf(stderr, "Error: failed to read init file: %s\n", init_path);
+    if (!parse_init_file(argv[1], &init, &mem)) {
+        fprintf(stderr, "Error: failed to read init file\n");
         return 1;
     }
 
-    if (!parse_va_file_and_run(va_path, out_path, &init, &mem)) {
-        fprintf(stderr, "Error: failed to process VA file: %s\n", va_path);
+    if (!run_va_file(argv[2], argv[3], &init, &mem)) {
+        fprintf(stderr, "Error: failed to process VA file\n");
         return 1;
     }
 
